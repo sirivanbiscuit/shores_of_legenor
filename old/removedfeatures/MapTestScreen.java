@@ -8,9 +8,9 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
-import ivandev.shoresoflegenor.maps.WorldMap;
-import ivandev.shoresoflegenor.tiles.AbstractMapTile;
-import ivandev.shoresoflegenor.util.ScreenUtil;
+import shoresoflegenor.maps.WorldMap;
+import shoresoflegenor.tiles.AbstractMapTile;
+import shoresoflegenor.util.ScreenUtil;
 
 public class MapTestScreen {
 
