@@ -2,6 +2,8 @@ package shoresoflegenor.uifeatures.actionspaces;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 
@@ -24,13 +26,15 @@ public abstract class ActionSpace extends JComponent {
 	private UnitEntity sourceEntity;
 	private MapTile orgTile;
 	private SpaceAction action;
+	private Runnable actionRun;
 
 	private PolyTile poly;
 
-	public ActionSpace(UnitEntity sourceEntity, MapTile orgTile, SpaceAction action) {
+	public ActionSpace(UnitEntity sourceEntity, MapTile orgTile, SpaceAction action, Runnable actionRun) {
 		this.sourceEntity = sourceEntity;
 		this.orgTile = orgTile;
 		this.action = action;
+		this.actionRun = actionRun;
 
 		initButton();
 	}
@@ -42,6 +46,13 @@ public abstract class ActionSpace extends JComponent {
 
 		setBounds(poly.corLeft.x, poly.corTop.y, poly.getBounds().width, poly.getBounds().height);
 		repaint();
+
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				actionRun.run();
+			}
+		});
 	}
 
 	@Override
@@ -75,4 +86,5 @@ public abstract class ActionSpace extends JComponent {
 	public MapTile getOrigin() {
 		return orgTile;
 	}
+	
 }

@@ -32,7 +32,7 @@ public class MapGridClickAdapter extends MouseAdapter {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		if (SwingUtilities.isMiddleMouseButton(e)) {
 			return;
 		}
@@ -41,78 +41,79 @@ public class MapGridClickAdapter extends MouseAdapter {
 		Graphics graphics = map.getGraphics();
 
 		MapTile t = map.getTileFromLocation(e.getX(), e.getY());
-		if (t.base.contains(e.getPoint())) {
-			GameData.refreshActiveCanvas();
+		if (t != null) {
+			if (t.base.contains(e.getPoint())) {
+				GameData.refreshActiveCanvas();
 
-			graphicsC = ActionSpace.UNDEFINED;
+				graphicsC = ActionSpace.UNDEFINED;
 
-			UnitEntity ent = world.worldUnitMap[t.gridX][t.gridY];
-			boolean hasUnit = ent != null;
-			boolean openStat = hasUnit && SwingUtilities.isRightMouseButton(e);
-			boolean openAction = hasUnit && SwingUtilities.isLeftMouseButton(e);
+				UnitEntity ent = world.worldUnitMap[t.gridX][t.gridY];
+				boolean hasUnit = ent != null;
+				boolean openStat = hasUnit && SwingUtilities.isRightMouseButton(e);
+				boolean openAction = hasUnit && SwingUtilities.isLeftMouseButton(e);
 
-			// unit info panel
-			if (openStat) {
-				SoundUtil.playClick();
-				map.add(new UnitStatFrame(ent, t));
-				graphicsC = ActionSpace.INFO;
-			}
-
-			// action spaces
-			else if (openAction) {
-				if (ent.owner.botPlayer == null && !ent.onCooldown) {
+				// unit info panel
+				if (openStat) {
 					SoundUtil.playClick();
-					graphicsC = ActionSpace.ACTION;
+					map.add(new UnitStatFrame(ent, t));
+					graphicsC = ActionSpace.INFO;
+				}
 
-					// movement spaces
-					for (int oSX = -1; oSX <= 1; oSX++) {
-						for (int oSY = -1; oSY <= 1; oSY++) {
-							try {
-								if (!(oSX == 0 && oSY == 0)) {
-									Point targ = new Point(t.gridX + oSX, t.gridY + oSY);
-									MapTile targTile = map.getMap()[targ.x][targ.y];
+				// action spaces
+				else if (openAction) {
+					if (ent.owner.botPlayer == null && !ent.onCooldown) {
+						SoundUtil.playClick();
+						graphicsC = ActionSpace.ACTION;
 
-									if (world.worldUnitMap[targ.x][targ.y] == null
-											&& ent.canMoveOnTerrainType(targTile.terrainType)) {
-										map.add(new MovementSpace(ent, targTile));
+						// movement spaces
+						for (int oSX = -1; oSX <= 1; oSX++) {
+							for (int oSY = -1; oSY <= 1; oSY++) {
+								try {
+									if (!(oSX == 0 && oSY == 0)) {
+										Point targ = new Point(t.gridX + oSX, t.gridY + oSY);
+										MapTile targTile = map.getMap()[targ.x][targ.y];
+
+										if (world.worldUnitMap[targ.x][targ.y] == null
+												&& ent.canMoveOnTerrainType(targTile.terrainType)) {
+											map.add(new MovementSpace(ent, targTile));
+										}
 									}
+								} catch (ArrayIndexOutOfBoundsException ex) {
+									continue;
 								}
-							} catch (ArrayIndexOutOfBoundsException ex) {
-								continue;
 							}
 						}
-					}
 
-					// attack spaces
-					for (int oSX = -ent.data.rng; oSX <= ent.data.rng; oSX++) {
-						for (int oSY = -ent.data.rng; oSY <= ent.data.rng; oSY++) {
-							try {
-								Point targPt = new Point(t.gridX + oSX, t.gridY + oSY);
-								MapTile targTile = map.getMap()[targPt.x][targPt.y];
-								UnitEntity targEnt = world.worldUnitMap[targPt.x][targPt.y];
+						// attack spaces
+						for (int oSX = -ent.data.rng; oSX <= ent.data.rng; oSX++) {
+							for (int oSY = -ent.data.rng; oSY <= ent.data.rng; oSY++) {
+								try {
+									Point targPt = new Point(t.gridX + oSX, t.gridY + oSY);
+									MapTile targTile = map.getMap()[targPt.x][targPt.y];
+									UnitEntity targEnt = world.worldUnitMap[targPt.x][targPt.y];
 
-								if (targEnt != null) {
-									if (targEnt.owner != ent.owner) {
-										map.add(new AttackSpace(ent, targTile));
+									if (targEnt != null) {
+										if (targEnt.owner != ent.owner) {
+											map.add(new AttackSpace(ent, targTile));
+										}
 									}
+								} catch (ArrayIndexOutOfBoundsException ex) {
+									continue;
 								}
-							} catch (ArrayIndexOutOfBoundsException ex) {
-								continue;
 							}
 						}
 					}
 				}
+
+				map.repaint();
+				EventQueue.invokeLater(() -> {
+					graphics.setColor(graphicsC);
+					graphics.drawPolygon(t.base);
+
+					graphics.dispose();
+				});
 			}
-
-			map.repaint();
-			EventQueue.invokeLater(() -> {
-				graphics.setColor(graphicsC);
-				graphics.drawPolygon(t.base);
-
-				graphics.dispose();
-			});
 		}
-
 	}
 
 }

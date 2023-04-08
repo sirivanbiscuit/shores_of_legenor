@@ -268,7 +268,7 @@ public class NewGameScreen extends MenuUI {
 		public void mouseClicked(MouseEvent e) {
 			super.mouseClicked(e);
 
-			float[] input = new float[proceduralFields.length];
+			double[] input = new double[proceduralFields.length];
 			boolean valid = true;
 			for (int i = 0; i < proceduralFields.length; i++) {
 				try {

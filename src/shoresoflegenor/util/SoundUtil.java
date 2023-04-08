@@ -9,6 +9,9 @@ import javax.sound.sampled.Clip;
 import shoresoflegenor.world.GameData;
 
 public final class SoundUtil {
+	
+	private SoundUtil() {
+	}
 
 	private static void playSound(String name) {
 		try {

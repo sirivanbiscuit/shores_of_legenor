@@ -2,6 +2,7 @@ package shoresoflegenor.graphics;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
@@ -21,6 +22,9 @@ public class EntityGraphics {
 	private static final Color SHADOW_ENEMY = new Color(200, 30, 30, 90);
 	private static final Color COOLDOWN_OVERLAY = new Color(200, 200, 200, 150);
 
+	private static final Color ORG_POSITIVE = new Color(0, 200, 0);
+	private static final Color ORG_NEGATIVE = new Color(200, 0, 0);
+
 	private WorldMap entityWorld;
 
 	public EntityGraphics(WorldMap entityWorld) {
@@ -32,9 +36,11 @@ public class EntityGraphics {
 			if (ChunkTile.getChunkFromMapTile(entityWorld.mapGraphics.chunkGrid, entity.xPos, entity.yPos).isRendered) {
 				Rectangle rect = getEntityBoundingBox(entity);
 				PolyTile overlay = entityWorld.getMap()[entity.xPos][entity.yPos].base;
-
+				Rectangle ovBounds = overlay.getBounds();
+				
 				g.setColor(entity.owner.botPlayer == null ? SHADOW_FRIENDLY : SHADOW_ENEMY);
 				g.fillPolygon(overlay);
+
 				if (entity instanceof UnitEntity) {
 					if (((UnitEntity) entity).onCooldown) {
 						g.setColor(COOLDOWN_OVERLAY);
