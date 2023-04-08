@@ -24,7 +24,7 @@ public class AbstractMapTile implements Serializable {
 	public AbstractMapTile(TerrainType terrainType) {
 		this.terrainType = terrainType;
 	}
-	
+
 	public static AbstractMapTile[][] copyMap(AbstractMapTile[][] map) {
 		int l = map.length;
 		AbstractMapTile[][] dupMap = new AbstractMapTile[l][l];
@@ -119,11 +119,11 @@ public class AbstractMapTile implements Serializable {
 	 * spawn during quick generation).
 	 */
 	public static AbstractMapTile[][] genQuickMap(int subdivs, int continents, int landGenDryCycles,
-			float landGenDryPower, int landGenErodeCycles, float landGenErodePower, int forestCycles, int forestDepth,
-			int forestLength, float forestWeight, float forestFlow, int mountainCycles, int mountainDepth,
-			int mountainLength, float mountainWeight, float mountainFlow, int riverCycles, int riverDepth,
-			int riverLength, float riverWeight, float riverFlow, int landCleanCycles, float landCleanLand,
-			float landCleanWater) {
+			double landGenDryPower, int landGenErodeCycles, double landGenErodePower, int forestCycles, int forestDepth,
+			int forestLength, double forestWeight, double forestFlow, int mountainCycles, int mountainDepth,
+			int mountainLength, double mountainWeight, double mountainFlow, int riverCycles, int riverDepth,
+			int riverLength, double riverWeight, double riverFlow, int landCleanCycles, double landCleanLand,
+			double landCleanWater) {
 		// generate continent map
 		AbstractMapTile[][] map = new AbstractMapTile[subdivs][subdivs];
 		map = AbstractMapTile.genContinentMap(subdivs, continents);
@@ -167,7 +167,7 @@ public class AbstractMapTile implements Serializable {
 	 * @param landDensity the approximate portion of grid squares which should
 	 *                    become grass
 	 */
-	public static AbstractMapTile[][] genRandomMap(int subdivs, float landDensity) {
+	public static AbstractMapTile[][] genRandomMap(int subdivs, double landDensity) {
 		AbstractMapTile[][] map = new AbstractMapTile[subdivs][subdivs];
 
 		for (int x = 0; x < subdivs; x++) {
@@ -228,7 +228,7 @@ public class AbstractMapTile implements Serializable {
 	 *                    during each cycle
 	 */
 	public static AbstractMapTile[][] exeLandGen(AbstractMapTile[][] map, GenProcedure procedure, int cycles,
-			float power) {
+			double power) {
 		AbstractMapTile[][] mapCopy;
 
 		for (int cyc = 0; cyc < cycles; cyc++) {
@@ -270,7 +270,7 @@ public class AbstractMapTile implements Serializable {
 	 * @param land   the approximate portion of peninsulas/islands to be cleaned
 	 * @param water  the approximate portion of gulfs/lakes to be cleaned
 	 */
-	public static AbstractMapTile[][] exeLandClean(AbstractMapTile[][] map, int cycles, float land, float water) {
+	public static AbstractMapTile[][] exeLandClean(AbstractMapTile[][] map, int cycles, double land, double water) {
 		AbstractMapTile[][] mapCopy;
 
 		for (int cyc = 0; cyc < cycles; cyc++) {
@@ -325,7 +325,7 @@ public class AbstractMapTile implements Serializable {
 	 * @param doubleSided should the strip extend in opposite directions
 	 */
 	public static AbstractMapTile[][] exeBiomeStrip(AbstractMapTile[][] map, int cycles, TerrainType terrain, int depth,
-			int length, float weight, float flow, boolean doubleSided) {
+			int length, double weight, double flow, boolean doubleSided) {
 		int startX, startY;
 		int shiftX = 0;
 		int shiftY = 0;
@@ -342,8 +342,8 @@ public class AbstractMapTile implements Serializable {
 			do {
 				mountPathAng = (int) (Math.random() * 360);
 			} while (mountPathAng % 90 < 15 || mountPathAng % 90 > 75);
-			float flowX = (float) Math.sin(Math.toRadians(mountPathAng));
-			float flowY = (float) Math.cos(Math.toRadians(mountPathAng));
+			double flowX = (double) Math.sin(Math.toRadians(mountPathAng));
+			double flowY = (double) Math.cos(Math.toRadians(mountPathAng));
 
 			for (int dist = 0; dist < length; dist++) {
 				int sideCycle = 0;
@@ -379,8 +379,8 @@ public class AbstractMapTile implements Serializable {
 					do {
 						mountPathAng = (int) (Math.random() * 360);
 					} while (mountPathAng % 90 < 15 || mountPathAng % 90 > 75);
-					flowX = (float) Math.sin(Math.toRadians(mountPathAng));
-					flowY = (float) Math.cos(Math.toRadians(mountPathAng));
+					flowX = (double) Math.sin(Math.toRadians(mountPathAng));
+					flowY = (double) Math.cos(Math.toRadians(mountPathAng));
 				}
 
 				shiftX += Math.random() < Math.abs(flowX) ? (flowX > 0 ? 1 : -1) : 0;

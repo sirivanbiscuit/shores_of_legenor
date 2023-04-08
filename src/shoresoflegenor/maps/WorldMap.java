@@ -162,7 +162,7 @@ public class WorldMap extends JPanel {
 			entityGraphics.renderEntityPool(g, GameData.gameWorld.worldBuildingPool);
 			entityGraphics.renderEntityPool(g, GameData.gameWorld.worldUnitPool);
 		}
-		
+
 	}
 
 	/**
@@ -323,8 +323,8 @@ public class WorldMap extends JPanel {
 			}
 
 			if (netZoom != 0) {
-				setLocation((int) (getX() - netZoom * (anchor.x / (float) ogLength)),
-						(int) (getY() - (netZoom / 2) * (anchor.y / (float) (ogLength / 2))));
+				setLocation((int) (getX() - netZoom * (anchor.x / (double) ogLength)),
+						(int) (getY() - (netZoom / 2) * (anchor.y / (double) (ogLength / 2))));
 				setSize(mapPxLen, mapPxLen / 2);
 				removeAll(); // canels ongoing animations
 				redraw();

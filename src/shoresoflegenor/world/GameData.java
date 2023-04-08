@@ -15,8 +15,9 @@ public final class GameData {
 
 	public static final String SOUND_PATH = "res/sounds/";
 	public static final String IMAGE_PATH = "res/images/";
-	public static final String SAVE_PATH = "res/saves/";
 	public static final String FONT_PATH = "res/fonts/";
+
+	public static final String SAVE_PATH = "data/saves/";
 
 	public static GameWorld gameWorld = new GameWorld();
 
