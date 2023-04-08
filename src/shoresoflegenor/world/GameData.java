@@ -22,6 +22,9 @@ public final class GameData {
 	public static GameWorld gameWorld = new GameWorld();
 
 	private static WorldMap activeMap;
+	
+	private GameData() {
+	}
 
 	public static void saveWorld() throws IOException, FileNotFoundException {
 		// reset cooldowns on exit

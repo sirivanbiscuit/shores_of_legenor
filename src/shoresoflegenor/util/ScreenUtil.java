@@ -8,6 +8,9 @@ import shoresoflegenor.world.GameData;
 
 public final class ScreenUtil {
 
+	private ScreenUtil() {
+	}
+
 	public static final int WINDOW_OFFSET_X = 16;
 	public static final int WINDOW_OFFSET_Y = 39;
 

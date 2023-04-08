@@ -6,7 +6,10 @@ import java.io.FileInputStream;
 
 import shoresoflegenor.world.GameData;
 
-public class FontUtil {
+public final class FontUtil {
+	
+	private FontUtil() {
+	}
 
 	public static Font getFont(String path, float size, int style) {
 		try {
